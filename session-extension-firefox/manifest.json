@@ -1,0 +1,49 @@
+{
+	"manifest_version": 3,
+	"name": "__MSG_extensionName__",
+	"version": "1.0.0",
+	"author": "gn0sys11root",
+	"description": "__MSG_extensionDescription__",
+	"default_locale": "en",
+	"background": {
+		"scripts": [
+			"interface/lib/env.js",
+			"interface/lib/browserDetector.js",
+			"interface/lib/permissionHandler.js",
+			"cookie-editor.js"
+		],
+		"type": "module"
+	},
+	"action": {
+		"default_icon": {
+			"16": "icons/icono-16x16.png",
+			"32": "icons/icono-32x32.png",
+			"48": "icons/icono-48x48.png",
+			"128": "icons/icono-128x128.png"
+		},
+		"default_title": "Session Manager",
+		"default_popup": "interface/popup/cookie-list.html"
+	},
+	"permissions": [
+		"cookies",
+		"tabs",
+		"storage",
+		"scripting"
+	],
+	"host_permissions": [
+		"<all_urls>"
+	],
+	"icons": {
+		"16": "icons/icono-16x16.png",
+		"19": "icons/icono-19x19.png",
+		"32": "icons/icono-32x32.png",
+		"48": "icons/icono-48x48.png",
+		"128": "icons/icono-128x128.png"
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{c3c10168-4186-445c-9c5b-63f12b8e2c87}",
+			"strict_min_version": "112.0"
+		}
+	}
+}

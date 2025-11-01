@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Session Manager: Local and flexible",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Manage and organize your web sessions locally. Save, restore and export cookies, localStorage and sessionStorage without cloud sync.",
+    "description": "Description of the extension"
+  }
+}
