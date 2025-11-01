@@ -1,6 +1,8 @@
 # Session Manager: Local and flexible
 
-A Chromium and Firefox extension that saves your session on websites like social networks (Facebook, Twitter, Instagram, Telegram, Reddit) and other sites where session tokens are stored in cookies, localStorage, sessionStorage, and IndexedDB. I created this extension because it's useful when I log in incognito mode or simply don't want to spend time logging in, avoiding email verification or 2FA, or just entering my email and password. It's a very useful way to speed up web browsing.
+A Chromium and Firefox extension that saves your session on websites like social networks (Facebook, Twitter, Instagram, Telegram, Reddit) and other sites where session tokens are stored in cookies, localStorage, sessionStorage, and IndexedDB. I created this extension because it's useful when I log in incognito mode or simply don't want to spend time logging in, avoiding email verification or 2FA, or just entering my email and password.
+
+It's a very useful way to speed up web browsing.
 
 **Use Cases:**
 - Quickly switch between multiple accounts on the same website
