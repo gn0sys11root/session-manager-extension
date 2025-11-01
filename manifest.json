@@ -1,0 +1,41 @@
+{
+	"manifest_version": 3,
+	"name": "__MSG_extensionName__",
+	"version": "1.0.0",
+	"author": "gn0sys11root",
+	"description": "__MSG_extensionDescription__",
+	"default_locale": "en",
+	"offline_enabled": true,
+	"minimum_chrome_version": "102",
+	"background": {
+		"service_worker": "cookie-editor.js",
+		"type": "module"
+	},
+	"action": {
+		"default_icon": {
+			"16": "icons/icono.png",
+			"19": "icons/icono.png",
+			"32": "icons/icono.png",
+			"48": "icons/icono.png"
+		},
+		"default_title": "Session Manager",
+		"default_popup": "interface/popup/cookie-list.html"
+	},
+	"permissions": [
+		"cookies",
+		"tabs",
+		"storage",
+		"scripting"
+	],
+	"host_permissions": [
+		"<all_urls>"
+	],
+	"icons": {
+		"16": "icons/icono.png",
+		"19": "icons/icono.png",
+		"32": "icons/icono.png",
+		"48": "icons/icono.png",
+		"128": "icons/icono.png"
+	},
+	"incognito": "split"
+}

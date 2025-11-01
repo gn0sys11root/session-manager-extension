@@ -1,0 +1,394 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="session-styles.css" />
+    <title>Session Manager</title>
+  </head>
+
+  <body class="notransition">
+    <script src="../settings/i18n.js"></script>
+    <div id="pageTitle">
+      <h1 class="container">
+        Session Manager
+      </h1>
+      <div id="storage-tabs">
+        <button class="tab-button" data-tab="sessions">Sessions</button>
+        <button class="tab-button" data-tab="cookies">Cookies</button>
+        <button class="tab-button" data-tab="localStorage">LocalStorage</button>
+        <button class="tab-button" data-tab="sessionStorage">SessionStorage</button>
+      </div>
+      <div id="main-menu" style="display: none;">
+        <button id="main-menu-button">
+          <svg class="icon">
+            <use href="../sprites/solid.svg#ellipsis-v"></use>
+          </svg>
+        </button>
+        <div id="main-menu-content">
+          <label
+            class="menu-item switch"
+            for="advanced-toggle-all"
+            id="advanced-toggle-all-label"
+          >
+            Show Advanced
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="advanced-toggle-all"
+                aria-describedby="advanced-toggle-all-label"
+              />
+              <span class="slider"></span>
+            </label>
+          </label>
+          <button class="menu-item" id="menu-all-options">
+            See All Options
+            <svg class="icon">
+              <use href="../sprites/solid.svg#external-link-alt"></use>
+            </svg>
+          </button>
+          <button class="menu-item" id="menu-settings">
+            Settings
+            <svg class="icon">
+              <use href="../sprites/solid.svg#cog"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="ad-container"></div>
+
+    <div id="sessions-container" style="display: none;"></div>
+    <div id="cookie-container"></div>
+
+
+    <div id="notification-container">
+      <div id="notification">
+        <span></span>
+        <button
+          id="notification-dismiss"
+          aria-label="Dismiss Notification"
+          type="button"
+        >
+          <svg class="icon"><use href="../sprites/solid.svg#times"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Save Session Modal -->
+    <div id="saveSessionModal" class="modal-overlay" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h2 data-i18n="saveSession">Guardar Sesión</h2>
+          <button id="closeSaveSessionModal" class="close-btn" type="button">
+            <svg class="icon"><use href="../sprites/solid.svg#times"></use></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="saveSessionForm">
+            <div class="form-group">
+              <label for="sessionNameInput" data-i18n="sessionName">Nombre de la sesión:</label>
+              <input 
+                type="text" 
+                id="sessionNameInput" 
+                data-i18n-placeholder="sessionNamePlaceholder"
+                placeholder="Ej: Mi sesión de trabajo"
+                autocomplete="off"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label data-i18n="domain">Dominio:</label>
+              <input 
+                type="text" 
+                id="sessionDomainInput" 
+                readonly
+                disabled
+              />
+            </div>
+            <div class="modal-actions">
+              <button type="button" id="cancelSaveSessionBtn" class="btn-secondary" data-i18n="cancel">Cancelar</button>
+              <button type="submit" class="btn-primary" data-i18n="save">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="../lib/isPopup.js"></script>
+    <script type="module" src="cookie-list.js"></script>
+
+    <template id="tmp-cookie">
+      <li data-name="" class="cookie">
+        <div
+          class="header container"
+          tabindex="0"
+          role="button"
+          aria-expanded="false"
+        >
+          <svg class="icon arrow">
+            <use href="../sprites/solid.svg#angle-down"></use>
+          </svg>
+          <span class="header-name"></span>
+          <span class="header-extra-info"></span>
+          <div class="btns">
+            <button
+              class="delete"
+              data-tooltip-left="Delete"
+              aria-label="Delete"
+              tabindex="-1"
+              type="button"
+            >
+              <svg class="icon">
+                <use href="../sprites/solid.svg#trash"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="expando" aria-hidden="true" role="region">
+          <div class="wrapper">
+            <div class="action-btns">
+              <button
+                class="delete"
+                data-tooltip="Delete"
+                aria-label="Delete"
+                type="button"
+              >
+                <svg class="icon">
+                  <use href="../sprites/solid.svg#trash"></use>
+                </svg>
+              </button>
+              <button
+                class="save"
+                data-tooltip="Save"
+                aria-label="Save"
+                type="submit"
+              >
+                <svg class="icon">
+                  <use href="../sprites/solid.svg#save"></use>
+                </svg>
+              </button>
+            </div>
+            <form data-id="" class="form container">
+              <div>
+                <label class="label-name">Name</label>
+                <input name="name" type="text" class="input-name" />
+              </div>
+              <div>
+                <label class="label-value">Value</label>
+                <textarea name="value" class="input-value"></textarea>
+              </div>
+              <button class="advanced-toggle" type="button">
+                Show Advanced
+              </button>
+              <div class="advanced-form">
+                <div>
+                  <label class="label-domain">Domain</label>
+                  <input name="domain" type="text" class="input-domain" />
+                </div>
+                <div>
+                  <label class="label-path">Path</label>
+                  <input name="path" type="text" class="input-path" />
+                </div>
+                <div>
+                  <label class="label-expiration">Expiration</label>
+                  <input
+                    name="expiration"
+                    type="text"
+                    class="input-expiration"
+                  />
+                </div>
+                <div>
+                  <label class="label-sameSite">Same Site</label>
+                  <select name="sameSite" class="input-sameSite">
+                    <option value="no_restriction">None</option>
+                    <option value="lax">Lax</option>
+                    <option value="strict">Strict</option>
+                  </select>
+                </div>
+                <div class="checkbox-list">
+                  <label class="label-hostOnly">
+                    <input
+                      type="checkbox"
+                      name="hostOnly"
+                      class="input-hostOnly"
+                    />
+                    Host Only
+                  </label>
+                  <label class="label-session">
+                    <input
+                      type="checkbox"
+                      name="session"
+                      class="input-session"
+                    />
+                    Session
+                  </label>
+                  <label class="label-secure">
+                    <input type="checkbox" name="secure" class="input-secure" />
+                    Secure
+                  </label>
+                  <label class="label-httpOnly">
+                    <input
+                      type="checkbox"
+                      name="httpOnly"
+                      class="input-httpOnly"
+                    />
+                    Http Only
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <template id="tmp-import">
+      <form class="form container import">
+        <div>
+          <label for="content-import">
+            Supported format: JSON, Header string, Netscape.
+          </label>
+          <textarea
+            class="json"
+            name="content"
+            id="content-import"
+            placeholder='JSON:	&#10;[{"name":"Cookie","value":"text",[...]}] &#10;&#10;Header String:	&#10;Cookie=text;Editor=yes	&#10;&#10;Netscape:	&#10;# Netscape HTTP Cookie File	&#10;# [...]	&#10;cookie-editor.com[...]	Cookie	text'
+          ></textarea>
+        </div>
+      </form>
+    </template>
+
+    <template id="tmp-export">
+      <form class="form container export sbro">
+        <div>
+          <label for="content-export">Json Only Format Exporter</label>
+          <textarea
+            class="json"
+            name="content"
+            id="content-export"
+            placeholder="Export your  here"
+          >
+          </textarea>
+        </div>
+      </form>
+    </template>
+
+    <template id="tmp-create">
+      <form class="form container create">
+        <div>
+          <label for="name-create">Name</label>
+          <input name="name" type="text" value="" id="name-create" />
+        </div>
+        <div>
+          <label for="value-create">Value</label>
+          <textarea name="value" id="value-create"></textarea>
+        </div>
+      </form>
+    </template>
+
+    <template id="tmp-empty">
+      <p class="container" id="no-cookies" data-i18n="noCookies">
+        This page does not have any cookies.
+      </p>
+    </template>
+
+    <template id="tmp-no-permission">
+      <div class="container" id="no-permission">
+        You do not have the permission required to read the cookies for this
+        page.
+        <div>
+          Request permission for...
+          <div class="button-container">
+            <button
+              id="request-permission"
+              title="Request permission to read cookies for this site."
+            >
+              This site
+            </button>
+            <button
+              id="request-permission-all"
+              title="Request permission to read cookies for all sites."
+            >
+              All sites
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="tmp-permission-impossible">
+      <div class="container" id="permission-impossible" data-i18n="cannotDisplayCookies">
+        Session Manager can't display cookies for this page.
+      </div>
+    </template>
+
+    <template id="tmp-search-bar">
+      <li>
+        <div id="searchContainer">
+          <svg class="icon search">
+            <use href="../sprites/solid.svg#search"></use>
+          </svg>
+          <input id="searchField" type="text" placeholder="Search" />
+        </div>
+      </li>
+    </template>
+
+    <template id="tmp-export-options">
+      <div id="export-menu">
+        <h3>Export As:</h3>
+        <button id="export-json" type="button">JSON</button>
+        <button id="export-headerstring" type="button">Header String</button>
+        <button id="export-netscape" type="button">Netscape</button>
+      </div>
+    </template>
+
+    <template id="tmp-save-session">
+      <form class="form container save-session">
+        <div>
+          <label for="session-name">Session Name</label>
+          <input name="sessionName" type="text" id="session-name" placeholder="e.g. Instagram Account 1" required />
+        </div>
+        <div style="margin-top: 10px; color: #666; font-size: 13px;">
+          This will save all cookies from the current site.
+        </div>
+      </form>
+    </template>
+
+    <template id="tmp-restore-session">
+      <div class="form container restore-session">
+        <h3 style="margin-bottom: 15px;">Saved Sessions</h3>
+        <div id="sessions-list"></div>
+      </div>
+    </template>
+
+    <template id="tmp-session-item">
+      <div class="session-item" data-session-id="">
+        <div class="session-info">
+          <div class="session-name"></div>
+          <div class="session-details"></div>
+        </div>
+        <div class="session-actions">
+          <button class="restore-btn" type="button">Restore</button>
+          <button class="delete-btn" type="button">Delete</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tmp-ad-item">
+      <div>
+        <span class="ad-tag">Ad</span>
+        <div class="ad-link">
+          <a href="" target="_blank" rel="noopener noreferrer">Ad Text!</a>
+        </div>
+        <div class="ad-actions">
+          <button class="dont-show">Not interested</button>
+          <button class="later">Later</button>
+        </div>
+      </div>
+    </template>
+  </body>
+</html>

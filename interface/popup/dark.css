@@ -1,0 +1,50 @@
+
+[data-theme='dark'] #cookie-container #searchField {
+  border: 1px solid #1a1a1a;
+  background-color: #0a0a0a;
+}
+
+[data-theme='dark'] #cookie-container .header {
+  border: none;
+  border-top: 1px solid #1a1a1a;
+  background-color: #0a0a0a;
+}
+
+[data-theme="dark"] #cookie-container .expando {
+  background-color: #000000;
+  border: 1px solid #1a1a1a;
+}
+[data-theme="dark"] #cookie-container textarea,
+[data-theme="dark"] #cookie-container input[type='text'],
+[data-theme="dark"] #cookie-container select {
+  background-color: #0a0a0a;
+  border-color: #333333;
+  color: #ededed;
+}
+
+[data-theme="dark"] #cookie-container textarea:hover,
+[data-theme="dark"] #cookie-container input:not([disabled])[type='text']:hover {
+  border-color: #555555;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .panel-section-footer-button:hover,
+[data-theme="dark"] .panel-section-footer-button:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--primary-text-color);
+  fill: var(--primary-text-color);
+}
+[data-theme="dark"] .panel-section-footer-button .tooltip {
+  color: var(--primary-text-color);
+}
+[data-theme="dark"] .panel-section-footer-button:hover .tooltip,
+[data-theme="dark"] .panel-section-footer-button:focus .tooltip {
+  color: var(--primary-text-color);
+}
+
+[data-theme="dark"] #export-menu button:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+}
