@@ -74,7 +74,7 @@ This extension requires the following permissions:
 - **cookies**: To save and restore cookies
 - **tabs**: To reload pages after restoring sessions
 - **storage**: To store session data locally
-- **scripting**: To inject scripts for localStorage/sessionStorage/IndexedDB restoration
+- **scripting**: To add data for localStorage/sessionStorage/IndexedDB restoration
 - **host_permissions (`<all_urls>`)**: To access and restore data on any website
 
 ## Supported Languages
